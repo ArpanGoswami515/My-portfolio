@@ -406,20 +406,61 @@
                         </div>
                     </div>
                 </div>
-                <form class="contact-form">
+                <form class="contact-form" novalidate>
+                    <div class="form-message" id="formMessage"></div>
                     <div class="form-group">
-                        <input type="text" placeholder="Your Name" required>
+                        <label for="name">Full Name *</label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            placeholder="e.g., John Doe" 
+                            minlength="2" 
+                            maxlength="50" 
+                            required
+                            autocomplete="name">
+                        <span class="error-message"></span>
                     </div>
                     <div class="form-group">
-                        <input type="email" placeholder="Your Email" required>
+                        <label for="email">Email Address *</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="e.g., john@example.com" 
+                            maxlength="100" 
+                            required
+                            autocomplete="email">
+                        <span class="error-message"></span>
                     </div>
                     <div class="form-group">
-                        <input type="text" placeholder="Subject" required>
+                        <label for="subject">Subject *</label>
+                        <input 
+                            type="text" 
+                            id="subject" 
+                            name="subject" 
+                            placeholder="e.g., Project Inquiry" 
+                            minlength="5" 
+                            maxlength="100" 
+                            required>
+                        <span class="error-message"></span>
                     </div>
                     <div class="form-group">
-                        <textarea placeholder="Your Message" rows="5" required></textarea>
+                        <label for="message">Your Message *</label>
+                        <textarea 
+                            id="message" 
+                            name="message" 
+                            placeholder="Tell me about your project, ideas, or just say hi..." 
+                            rows="6" 
+                            minlength="10" 
+                            maxlength="1000" 
+                            required></textarea>
+                        <span class="error-message"></span>
+                        <span class="char-count">0 / 1000</span>
                     </div>
-                    <button type="submit" class="btn btn-primary">Send Message</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
                 </form>
             </div>
         </div>

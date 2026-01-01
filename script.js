@@ -146,34 +146,222 @@ revealElements.forEach(element => {
 // Contact Form Handling
 // =====================
 const contactForm = document.querySelector('.contact-form');
+const formMessage = document.getElementById('formMessage');
 
+// Character counter for message
+const messageTextarea = document.getElementById('message');
+const charCount = document.querySelector('.char-count');
+
+if (messageTextarea && charCount) {
+    messageTextarea.addEventListener('input', () => {
+        const count = messageTextarea.value.length;
+        charCount.textContent = `${count} / 1000`;
+        charCount.style.color = count > 950 ? '#ef4444' : count > 900 ? '#f59e0b' : '#94a3b8';
+    });
+}
+
+// Email validation regex
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Show error message
+function showError(input, message) {
+    const formGroup = input.parentElement;
+    const errorElement = formGroup.querySelector('.error-message');
+    errorElement.textContent = message;
+    errorElement.style.display = 'block';
+    input.classList.add('invalid');
+}
+
+// Clear error message
+function clearError(input) {
+    const formGroup = input.parentElement;
+    const errorElement = formGroup.querySelector('.error-message');
+    errorElement.textContent = '';
+    errorElement.style.display = 'none';
+    input.classList.remove('invalid');
+}
+
+// Show form message
+function showFormMessage(message, type) {
+    formMessage.textContent = message;
+    formMessage.className = `form-message ${type}`;
+    formMessage.style.display = 'block';
+    
+    setTimeout(() => {
+        formMessage.style.display = 'none';
+    }, 5000);
+}
+
+// Validate name
+function validateName(name) {
+    if (!name || name.length < 2) {
+        return 'Name must be at least 2 characters long';
+    }
+    if (name.length > 50) {
+        return 'Name must not exceed 50 characters';
+    }
+    if (!/^[a-zA-Z\s'-]+$/.test(name)) {
+        return 'Name can only contain letters, spaces, hyphens, and apostrophes';
+    }
+    return null;
+}
+
+// Validate email
+function validateEmail(email) {
+    if (!email) {
+        return 'Email is required';
+    }
+    if (email.length > 100) {
+        return 'Email must not exceed 100 characters';
+    }
+    if (!emailRegex.test(email)) {
+        return 'Please enter a valid email address';
+    }
+    return null;
+}
+
+// Validate subject
+function validateSubject(subject) {
+    if (!subject || subject.length < 5) {
+        return 'Subject must be at least 5 characters long';
+    }
+    if (subject.length > 100) {
+        return 'Subject must not exceed 100 characters';
+    }
+    return null;
+}
+
+// Validate message
+function validateMessage(message) {
+    if (!message || message.length < 10) {
+        return 'Message must be at least 10 characters long';
+    }
+    if (message.length > 1000) {
+        return 'Message must not exceed 1000 characters';
+    }
+    return null;
+}
+
+// Real-time validation on blur
+contactForm.querySelectorAll('input, textarea').forEach(input => {
+    input.addEventListener('blur', () => {
+        const value = input.value.trim();
+        let error = null;
+        
+        switch(input.id) {
+            case 'name':
+                error = validateName(value);
+                break;
+            case 'email':
+                error = validateEmail(value);
+                break;
+            case 'subject':
+                error = validateSubject(value);
+                break;
+            case 'message':
+                error = validateMessage(value);
+                break;
+        }
+        
+        if (error) {
+            showError(input, error);
+        } else {
+            clearError(input);
+        }
+    });
+    
+    // Clear error on input
+    input.addEventListener('input', () => {
+        if (input.classList.contains('invalid')) {
+            clearError(input);
+        }
+    });
+});
+
+// Form submission
 contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
     
     // Get form values
-    const name = contactForm.querySelector('input[type="text"]').value;
-    const email = contactForm.querySelector('input[type="email"]').value;
-    const subject = contactForm.querySelectorAll('input[type="text"]')[1].value;
-    const message = contactForm.querySelector('textarea').value;
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const subjectInput = document.getElementById('subject');
+    const messageInput = document.getElementById('message');
     
-    // Simple validation
-    if (name && email && subject && message) {
-        // Show success message
-        alert('Thank you for your message! I will get back to you soon.');
-        
-        // Reset form
-        contactForm.reset();
-        
-        // In a real application, you would send this data to a server
-        console.log({
-            name: name,
-            email: email,
-            subject: subject,
-            message: message
-        });
-    } else {
-        alert('Please fill in all fields.');
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
+    const subject = subjectInput.value.trim();
+    const message = messageInput.value.trim();
+    
+    // Clear all previous errors
+    contactForm.querySelectorAll('input, textarea').forEach(input => clearError(input));
+    
+    // Validate all fields
+    let isValid = true;
+    const errors = {};
+    
+    errors.name = validateName(name);
+    errors.email = validateEmail(email);
+    errors.subject = validateSubject(subject);
+    errors.message = validateMessage(message);
+    
+    // Show errors
+    if (errors.name) {
+        showError(nameInput, errors.name);
+        isValid = false;
     }
+    if (errors.email) {
+        showError(emailInput, errors.email);
+        isValid = false;
+    }
+    if (errors.subject) {
+        showError(subjectInput, errors.subject);
+        isValid = false;
+    }
+    if (errors.message) {
+        showError(messageInput, errors.message);
+        isValid = false;
+    }
+    
+    // If validation fails, scroll to first error
+    if (!isValid) {
+        const firstError = contactForm.querySelector('.invalid');
+        if (firstError) {
+            firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            firstError.focus();
+        }
+        showFormMessage('Please fix the errors above before sending.', 'error');
+        return;
+    }
+    
+    // Compose email body from client's perspective
+    const emailBody = `Hi Arpan,
+
+${message}
+
+---
+
+Best regards,
+${name}
+
+Contact me at: ${email}`;
+    
+    // Create mailto link with pre-filled data
+    const mailtoLink = `mailto:arpan.g2102@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+    
+    // Show success message
+    showFormMessage('Opening your email client...', 'success');
+    
+    // Open email client with pre-filled form
+    window.location.href = mailtoLink;
+    
+    // Reset form after a delay
+    setTimeout(() => {
+        contactForm.reset();
+        charCount.textContent = '0 / 1000';
+        charCount.style.color = '#94a3b8';
+        showFormMessage('Form reset! Email client should be open.', 'success');
+    }, 1000);
 });
 
 // =====================
