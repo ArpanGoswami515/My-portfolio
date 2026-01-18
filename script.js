@@ -508,3 +508,16 @@ window.addEventListener('load', () => {
 // =====================
 console.log('%c👋 Welcome to my portfolio!', 'font-size: 20px; color: #6366f1; font-weight: bold;');
 console.log('%cInterested in working together? Feel free to reach out!', 'font-size: 14px; color: #22d3ee;');
+
+// =====================
+// Sticky CTA Button
+// =====================
+const stickyCta = document.getElementById('stickyCta');
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 500) {
+        stickyCta.classList.add('visible');
+    } else {
+        stickyCta.classList.remove('visible');
+    }
+});

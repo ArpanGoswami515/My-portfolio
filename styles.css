@@ -177,11 +177,22 @@ section {
     margin-bottom: 1rem;
 }
 
-.hero-description {
-    font-size: 1.1rem;
-    color: var(--text-secondary);
+.value-proposition {
     margin-bottom: 2rem;
-    max-width: 500px;
+}
+
+.hero-description {
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.hero-value {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    max-width: 550px;
+    line-height: 1.7;
 }
 
 .hero-buttons {
@@ -521,6 +532,119 @@ section {
 }
 
 /* =====================
+   Testimonials Section
+   ===================== */
+.testimonials {
+    background-color: var(--dark-bg);
+    padding: 80px 0;
+}
+
+.section-subtitle {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-top: -1.5rem;
+    margin-bottom: 3rem;
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.testimonial-card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 15px;
+    border: 2px solid var(--border-color);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.testimonial-card:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
+}
+
+.quote-icon {
+    font-size: 2rem;
+    color: var(--primary-color);
+    opacity: 0.3;
+    margin-bottom: 1rem;
+}
+
+.testimonial-text {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.author-info h4 {
+    color: var(--text-primary);
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+}
+
+.author-info p {
+    color: var(--accent-color);
+    font-size: 0.9rem;
+}
+
+/* =====================
+   Sticky CTA Button
+   ===================== */
+.sticky-cta {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--gradient);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    box-shadow: 0 5px 25px rgba(99, 102, 241, 0.4);
+    z-index: 999;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(100px);
+}
+
+.sticky-cta.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.sticky-cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 35px rgba(99, 102, 241, 0.5);
+    gap: 12px;
+}
+
+.sticky-cta i {
+    font-size: 1.2rem;
+}
+
+.sticky-cta span {
+    font-size: 1rem;
+}
+
+/* =====================
    Contact Section
    ===================== */
 .contact {
@@ -823,7 +947,13 @@ section {
         font-size: 9rem !important;
     }
 
-    .about-image .code-animation
+    .about-image .code-animation,
+    .profile-image {
+        width: 280px !important;
+        height: 280px !important;
+        font-size: 9rem !important;
+    }
+
     .hero-content {
         text-align: center;
         display: flex;
@@ -851,7 +981,8 @@ section {
         font-size: 1.1rem;
     }
 
-    .hero-description {
+    .hero-description,
+    .hero-value {
         text-align: center;
         max-width: 100%;
     }
@@ -865,26 +996,8 @@ section {
     .hero-buttons .btn {
         width: 100%;
         text-align: center;
-    } {
-        padding: 80px 0 40px;
     }
 
-    .hero-title {
-        font-size: 1.8rem;
-    }
-
-    .hero-subtitle {
-        font-size: 1rem;
-    }
-
-    .hero-description {
-        font-size: 0.95rem;
-    }
-
-    .image-placeholder {
-        width: 220px !important;
-        height: 220px !important;
-        font-size: 7rem !important
     .social-links {
         justify-content: center;
     }
@@ -903,6 +1016,29 @@ section {
 
     .projects-grid {
         grid-template-columns: 1fr;
+    }
+
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sticky-cta {
+        bottom: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+
+    .sticky-cta span {
+        display: none;
+    }
+
+    .sticky-cta {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        padding: 0;
+        justify-content: center;
     }
 
     .footer .container {
